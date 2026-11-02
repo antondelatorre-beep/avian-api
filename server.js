@@ -10,6 +10,9 @@ app.set('trust proxy', 1); // Render sits in front of the API
 
 app.use(helmet());
 
+// Render pings this to know the service is alive (no secrets, no database)
+app.get('/health', (req, res) => res.json({ ok: true }));
+
 const allowed = [process.env.CUSTOMER_SITE_URL, process.env.MANAGEMENT_SITE_URL]
   .filter(Boolean)
   .map((u) => u.replace(/\/$/, ''));

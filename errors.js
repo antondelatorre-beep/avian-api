@@ -13,6 +13,8 @@ function errorHandler(err, req, res, next) {
       details: err.issues.map((i) => ({ field: i.path.join('.'), message: i.message })),
     });
   }
+  if (err.type === 'entity.parse.failed') return res.status(400).json({ error: 'The request could not be read.' });
+  if (err.type === 'entity.too.large') return res.status(413).json({ error: 'The request is too large.' });
   if (err.status && err.status < 500) return res.status(err.status).json({ error: err.message });
 
   switch (err.code) {
